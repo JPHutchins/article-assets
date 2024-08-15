@@ -26,77 +26,43 @@
     <div id="call-stack-chart"></div>
 
     <script>
-      var trace1 = {
+
+      const trace1 = {
         x: ["Function A"],
-        y: [2],
+        y: [16],
         name: "Frame 1",
         type: "bar",
       };
 
-      var trace2 = {
+      const trace2 = {
         x: ["Function A"],
-        y: [3],
+        y: [32],
         name: "Frame 2",
         type: "bar",
       };
 
-      var trace3 = {
+      const trace3 = {
         x: ["Function A"],
-        y: [4],
+        y: [48],
         name: "Frame 3",
         type: "bar",
       };
 
-      var data = [trace1, trace2, trace3];
+      const data = [trace1, trace2, trace3];
 
-      var layout = {
+      const layout = {
         barmode: "stack",
         title: "Call Stack Visualization",
-        annotations: [
-          {
-            x: 0,
-            y: 2,
-            xref: "x",
-            yref: "y",
-            text: "Start",
-            showarrow: true,
-            arrowhead: 7,
-            ax: 0,
-            ay: -40,
-          },
-          {
-            x: 0,
-            y: 5,
-            xref: "x",
-            yref: "y",
-            text: "Middle",
-            showarrow: true,
-            arrowhead: 7,
-            ax: 0,
-            ay: -40,
-          },
-          {
-            x: 0,
-            y: 9,
-            xref: "x",
-            yref: "y",
-            text: "End",
-            showarrow: true,
-            arrowhead: 7,
-            ax: 0,
-            ay: -40,
-          },
-        ],
         xaxis: {
           title: "Functions",
         },
         yaxis: {
-          title: "Time (ms)",
+          title: "Stack Frame Allocation (Bytes)",
         },
-        responsive: true, // Enable responsiveness
       };
 
       Plotly.newPlot("call-stack-chart", data, layout, { responsive: true });
     </script>
+
   </body>
 </html>
