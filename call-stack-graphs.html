@@ -31,98 +31,24 @@
       const STRUCT_SIZE = 32;
       const RETURN_VARIABLE = "Return Value";
 
-      const traceBeforeCall = {
-        x: ["Before Call"],
-        y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
-        type: "bar",
-        hoverinfo: "y",
-        marker: {
-          color: 'lightgrey',
-          line: {
-            color: 'black',
-            width: 1
-          }
-        }
+      const createTrace = (x, y, color, annotationText) => {
+        return {
+          x: [x],
+          y: [y],
+          type: "bar",
+          hoverinfo: "y",
+          marker: {
+            color: color,
+            line: {
+              color: 'black',
+              width: 1
+            }
+          },
+          textposition: "inside",
+          insidetextanchor: "middle",
+          text: annotationText,
+        };
       };
-
-      const traceDuringCallCaller = {
-        x: ["During Call"],
-        y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
-        type: "bar",
-        hoverinfo: "y",
-        marker: {
-          color: 'lightgrey',
-          line: {
-            color: 'black',
-            width: 1
-          }
-        }
-      };
-
-      const traceDuringCallReturnValue = {
-        x: ["During Call"],
-        y: [STRUCT_SIZE], // 32 bytes for return value of Function A
-        type: "bar",
-        hoverinfo: "y",
-        marker: {
-          color: 'lightblue',
-          line: {
-            color: 'black',
-            width: 1
-          }
-        }
-      };
-
-      const traceDuringCallArg1 = {
-        x: ["During Call"],
-        y: [4], // 4 bytes for argument 1 of Function A
-        type: "bar",
-        hoverinfo: "y",
-        marker: {
-          color: 'lightpink',
-          line: {
-            color: 'black',
-            width: 1
-          }
-        }
-      };
-
-      const traceDuringCallArg2 = {
-        x: ["During Call"],
-        y: [4], // 4 bytes for argument 2 of Function A
-        type: "bar",
-        hoverinfo: "y",
-        marker: {
-          color: 'lightpink',
-          line: {
-            color: 'black',
-            width: 1
-          }
-        }
-      };
-
-      const traceAfterCall = {
-        x: ["After Call"],
-        y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
-        type: "bar",
-        hoverinfo: "y",
-        marker: {
-          color: 'lightblue',
-          line: {
-            color: 'black',
-            width: 1
-          }
-        }
-      };
-
-      const data = [
-        traceBeforeCall,
-        traceDuringCallCaller,
-        traceDuringCallReturnValue,
-        traceDuringCallArg1,
-        traceDuringCallArg2,
-        traceAfterCall
-      ];
 
       const layout = {
         barmode: "stack",
@@ -134,73 +60,11 @@
           title: "Stack Usage (Bytes)",
         },
         showlegend: false, // Remove the legend
+        uniformtext: {
+          mode: 'hide',
+          minsize: 8,
+        },
         annotations: [
-          {
-            x: "Before Call",
-            y: STRUCT_SIZE / 2,
-            xref: "x",
-            yref: "y",
-            text: RETURN_VARIABLE,
-            showarrow: false,
-            font: {
-              color: 'black'
-            }
-          },
-          {
-            x: "During Call",
-            y: STRUCT_SIZE / 2,
-            xref: "x",
-            yref: "y",
-            text: RETURN_VARIABLE,
-            showarrow: false,
-            font: {
-              color: 'black'
-            }
-          },
-          {
-            x: "During Call",
-            y: STRUCT_SIZE + STRUCT_SIZE / 2,
-            xref: "x",
-            yref: "y",
-            text: "Return Value",
-            showarrow: false,
-            font: {
-              color: 'black'
-            }
-          },
-          {
-            x: "During Call",
-            y: STRUCT_SIZE + STRUCT_SIZE + 2,
-            xref: "x",
-            yref: "y",
-            text: "Argument 1",
-            showarrow: false,
-            font: {
-              color: 'black'
-            }
-          },
-          {
-            x: "During Call",
-            y: STRUCT_SIZE + STRUCT_SIZE + 6,
-            xref: "x",
-            yref: "y",
-            text: "Argument 2",
-            showarrow: false,
-            font: {
-              color: 'black'
-            }
-          },
-          {
-            x: "After Call",
-            y: STRUCT_SIZE / 2,
-            xref: "x",
-            yref: "y",
-            text: RETURN_VARIABLE,
-            showarrow: false,
-            font: {
-              color: 'black'
-            }
-          },
           {
             x: 0.33,
             y: (STRUCT_SIZE * 2 + 8) / 2 + STRUCT_SIZE / 2,
@@ -272,7 +136,19 @@
       ]
       };
 
-      Plotly.newPlot("call-stack-chart", data, layout, { responsive: true });
+      Plotly.newPlot(
+        "call-stack-chart",
+        [
+          createTrace("Before Call", STRUCT_SIZE, 'lightgrey', RETURN_VARIABLE),
+          createTrace("During Call", STRUCT_SIZE, 'lightgrey', RETURN_VARIABLE),
+          createTrace("During Call", STRUCT_SIZE, 'lightblue', "Return Value"),
+          createTrace("During Call", 4, 'lightpink', "Argument 1"),
+          createTrace("During Call", 4, 'lightpink', "Argument 2"),
+          createTrace("After Call", STRUCT_SIZE, 'lightblue', RETURN_VARIABLE)
+        ],
+        layout,
+        { responsive: true }
+      );
     </script>
 
 </body>
