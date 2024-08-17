@@ -27,11 +27,11 @@
 
     <script>
       const STRUCT_SIZE = 32;
+      const RETURN_VARIABLE = "Return Value";
 
       const traceBeforeCall = {
         x: ["Before Call"],
         y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
-        name: "Caller Local Variables",
         type: "bar",
         marker: {
           color: 'lightgrey'
@@ -41,7 +41,6 @@
       const traceDuringCallCaller = {
         x: ["During Call"],
         y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
-        name: "Caller Local Variables",
         type: "bar",
         marker: {
           color: 'lightgrey'
@@ -51,7 +50,6 @@
       const traceDuringCallReturnValue = {
         x: ["During Call"],
         y: [STRUCT_SIZE], // 32 bytes for return value of Function A
-        name: "Return Value",
         type: "bar",
         marker: {
           color: 'lightblue'
@@ -61,21 +59,24 @@
       const traceDuringCallArg1 = {
         x: ["During Call"],
         y: [4], // 4 bytes for argument 1 of Function A
-        name: "Argument 1",
         type: "bar",
+        marker: {
+          color: 'lightpink'
+        }
       };
 
       const traceDuringCallArg2 = {
         x: ["During Call"],
         y: [4], // 4 bytes for argument 2 of Function A
-        name: "Argument 2",
         type: "bar",
+        marker: {
+          color: 'lightpink'
+        }
       };
 
       const traceAfterCall = {
         x: ["After Call"],
         y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
-        name: "Caller Local Variables",
         type: "bar",
         marker: {
           color: 'lightblue'
@@ -98,8 +99,77 @@
           title: "Call State",
         },
         yaxis: {
-          title: "Stack Frame Allocation (Bytes)",
+          title: "Stack Usage (Bytes)",
         },
+        showlegend: false, // Remove the legend
+        annotations: [
+          {
+            x: "Before Call",
+            y: STRUCT_SIZE / 2,
+            xref: "x",
+            yref: "y",
+            text: RETURN_VARIABLE,
+            showarrow: false,
+            font: {
+              color: 'black'
+            }
+          },
+          {
+            x: "During Call",
+            y: STRUCT_SIZE / 2,
+            xref: "x",
+            yref: "y",
+            text: RETURN_VARIABLE,
+            showarrow: false,
+            font: {
+              color: 'black'
+            }
+          },
+          {
+            x: "During Call",
+            y: STRUCT_SIZE + STRUCT_SIZE / 2,
+            xref: "x",
+            yref: "y",
+            text: "Return Value",
+            showarrow: false,
+            font: {
+              color: 'black'
+            }
+          },
+          {
+            x: "During Call",
+            y: STRUCT_SIZE + STRUCT_SIZE + 2,
+            xref: "x",
+            yref: "y",
+            text: "Argument 1",
+            showarrow: false,
+            font: {
+              color: 'black'
+            }
+          },
+          {
+            x: "During Call",
+            y: STRUCT_SIZE + STRUCT_SIZE + 6,
+            xref: "x",
+            yref: "y",
+            text: "Argument 2",
+            showarrow: false,
+            font: {
+              color: 'black'
+            }
+          },
+          {
+            x: "After Call",
+            y: STRUCT_SIZE / 2,
+            xref: "x",
+            yref: "y",
+            text: RETURN_VARIABLE,
+            showarrow: false,
+            font: {
+              color: 'black'
+            }
+          },
+        ]
       };
 
       Plotly.newPlot("call-stack-chart", data, layout, { responsive: true });
