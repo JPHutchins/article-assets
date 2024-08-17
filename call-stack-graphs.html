@@ -26,35 +26,76 @@
     <div id="call-stack-chart"></div>
 
     <script>
+      const STRUCT_SIZE = 32;
 
-      const trace1 = {
-        x: ["Function A"],
-        y: [16],
-        name: "Frame 1",
+      const traceBeforeCall = {
+        x: ["Before Call"],
+        y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
+        name: "Caller Local Variables",
+        type: "bar",
+        marker: {
+          color: 'lightgrey'
+        }
+      };
+
+      const traceDuringCallCaller = {
+        x: ["During Call"],
+        y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
+        name: "Caller Local Variables",
+        type: "bar",
+        marker: {
+          color: 'lightgrey'
+        }
+      };
+
+      const traceDuringCallReturnValue = {
+        x: ["During Call"],
+        y: [STRUCT_SIZE], // 32 bytes for return value of Function A
+        name: "Return Value",
+        type: "bar",
+        marker: {
+          color: 'lightblue'
+        }
+      };
+
+      const traceDuringCallArg1 = {
+        x: ["During Call"],
+        y: [4], // 4 bytes for argument 1 of Function A
+        name: "Argument 1",
         type: "bar",
       };
 
-      const trace2 = {
-        x: ["Function A"],
-        y: [32],
-        name: "Frame 2",
+      const traceDuringCallArg2 = {
+        x: ["During Call"],
+        y: [4], // 4 bytes for argument 2 of Function A
+        name: "Argument 2",
         type: "bar",
       };
 
-      const trace3 = {
-        x: ["Function A"],
-        y: [48],
-        name: "Frame 3",
+      const traceAfterCall = {
+        x: ["After Call"],
+        y: [STRUCT_SIZE], // STRUCT_SIZE bytes for local variables of the caller
+        name: "Caller Local Variables",
         type: "bar",
+        marker: {
+          color: 'lightblue'
+        }
       };
 
-      const data = [trace1, trace2, trace3];
+      const data = [
+        traceBeforeCall,
+        traceDuringCallCaller,
+        traceDuringCallReturnValue,
+        traceDuringCallArg1,
+        traceDuringCallArg2,
+        traceAfterCall
+      ];
 
       const layout = {
         barmode: "stack",
         title: "Call Stack Visualization",
         xaxis: {
-          title: "Functions",
+          title: "Call State",
         },
         yaxis: {
           title: "Stack Frame Allocation (Bytes)",
@@ -64,5 +105,5 @@
       Plotly.newPlot("call-stack-chart", data, layout, { responsive: true });
     </script>
 
-  </body>
+</body>
 </html>
