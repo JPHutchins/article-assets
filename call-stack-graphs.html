@@ -10,14 +10,16 @@
       #call-stack-chart {
         width: 100%;
         height: 100%;
-        max-height: 500px;
+        max-height: 600px;
+        min-width: 600px;
         box-sizing: border-box;
       }
 
       /* Optional: Ensures the chart fits nicely on smaller screens */
       @media (max-width: 600px) {
         #call-stack-chart {
-          max-height: 300px;
+          max-height: 600px;
+          min-width: 600px;
         }
       }
     </style>
@@ -193,7 +195,75 @@
               color: 'black'
             }
           },
-        ]
+          {
+            x: 0.33,
+            y: (STRUCT_SIZE * 2 + 8) / 2 + STRUCT_SIZE / 2,
+            xref: 'paper',
+            yref: 'y',
+            text: 'Function Call Stack Frame',
+            showarrow: false,
+            font: {
+              color: 'black',
+              size: 12
+            },
+            textangle: 270
+          }
+        ],
+      shapes: [
+        {
+          type: 'line',
+          x0: 0,
+          y0: STRUCT_SIZE,
+          x1: 1,
+          y1: STRUCT_SIZE,
+          xref: 'paper',
+          yref: 'y',
+          line: {
+            color: 'black',
+            width: 2,
+          }
+        },
+        {
+          type: 'rect',
+          x0: 0,
+          x1: 1,
+          y0: 0,
+          y1: STRUCT_SIZE,
+          xref: 'paper',
+          yref: 'y',
+          fillcolor: 'rgba(0, 255, 0, 0.01)',
+          line: {
+            width: 0
+          }
+        },
+        {
+          type: 'rect',
+          x0: 0,
+          x1: 1,
+          y0: STRUCT_SIZE,
+          y1: STRUCT_SIZE * 2 + 8,
+          xref: 'paper',
+          yref: 'y',
+          fillcolor: 'rgba(255, 0, 0, 0.01)',
+          line: {
+            width: 0
+          }
+        },
+        {
+          type: 'rect',
+          x0: 0.45,
+          x1: 1.54,
+          y0: STRUCT_SIZE - 4,
+          y1: STRUCT_SIZE + 40 + 4,
+          xref: 'x',
+          yref: 'y',
+          line: {
+            color: 'black',
+            width: 2,
+            dash: 'dot'
+          }
+        }
+      ]
       };
 
       Plotly.newPlot("call-stack-chart", data, layout, { responsive: true });
