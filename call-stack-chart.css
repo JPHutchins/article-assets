@@ -12,3 +12,11 @@
         min-width: 600px;
     }
 }
+
+.source-link {
+    font-family: "Open Sans", verdana, arial, sans-serif;
+    text-align: right;
+    display: block;         
+    margin: 0 64px 0 auto;
+    font-size: 10px;
+}

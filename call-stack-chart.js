@@ -145,7 +145,7 @@ export const createCallStackChart = (options) => {
         type: 'bar',
         hoverinfo: 'y',
         marker: {
-            color: color,
+            color,
             line: {
                 color: 'black',
                 width: 1
@@ -175,4 +175,11 @@ export const createCallStackChart = (options) => {
             staticPlot: true,
         },
     );
+
+    const sourceLink = document.createElement('a');
+    sourceLink.href = 'https://github.com/JPHutchins/article-assets/blob/main/call-stack-chart.js';
+    sourceLink.target = '_blank';
+    sourceLink.textContent = '© 2024 JPHutchins + sparklerfish | Source Code';
+    sourceLink.classList.add('source-link'); 
+    document.getElementById('call-stack-chart').appendChild(sourceLink);
 };
