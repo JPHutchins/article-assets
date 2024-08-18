@@ -141,9 +141,11 @@
         [
           createTrace("Before Call", STRUCT_SIZE, 'lightgrey', RETURN_VARIABLE),
           createTrace("During Call", STRUCT_SIZE, 'lightgrey', RETURN_VARIABLE),
+          createTrace("During Call", 4, 'lightgreen', "Link Register"),
+          createTrace("During Call", 4, 'lightgreen', "Frame Pointer"),
+          createTrace("During Call", 4, 'lightpink', "Argument 0 (i32)"),
           createTrace("During Call", STRUCT_SIZE, 'lightblue', "Return Value"),
-          createTrace("During Call", 4, 'lightpink', "Argument 1"),
-          createTrace("During Call", 4, 'lightpink', "Argument 2"),
+          createTrace("During Call", 4, 'white', "Padding"),
           createTrace("After Call", STRUCT_SIZE, 'lightblue', RETURN_VARIABLE)
         ],
         layout,
