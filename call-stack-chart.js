@@ -89,9 +89,9 @@ export const createCallStackChart = (options) => {
         },
         annotations: [
             {
-                x: 0.33,
+                x: 0.38,
                 y: returnValueSize + callStackFrameSize / 2,
-                xref: 'paper',
+                xref: 'x',
                 yref: 'y',
                 text: 'Function Call',
                 showarrow: false,
