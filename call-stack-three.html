@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Call Stack Visualization</title>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <link rel="stylesheet" href="call-stack-chart.css">
+    </head>
+    <body>
+        <div id="call-stack-chart"></div>
+        <script type="module">
+            import { createCallStackChart } from './call-stack-chart.js';
+            createCallStackChart({
+                id: 'call-stack-chart',
+                title: 'Return Value Provided by Caller<br>GCC -O0<br>13.2.0 ARM 32 (unknown-eabi)',
+                returnValueSize: 32,
+                returnValueOnCallStack: false,
+                callArgs: [
+                    { name: 'out *', size: 4, color: 'lightpink' },
+                    { name: 'i32', size: 4, color: 'lightpink' },
+                ],
+                linkRegister: true,
+                padding: 0,
+                yMax: 90,
+            });
+        </script>
+    </body>
+</html>
