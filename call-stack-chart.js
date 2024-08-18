@@ -1,6 +1,9 @@
 /**
  * Copyright (c) 2024 github.com/sparklerfish & github.com/JPHutchins
  * SPDX-License-Identifier: Apache-2.0
+ * 
+ * <script src="https://cdn.plot.ly/plotly-2.34.0.min.js" charset="utf-8"></script>
+ * 
  */
 
 const RETURN_VARIABLE = 'Return Value';
@@ -9,6 +12,7 @@ const DURING_CALL = 'During Call';
 const AFTER_CALL = 'After Call';
 
 const argumentTypeNames = {
+    id: 'string',
     title: 'string',
     returnValueSize: 'number',
     returnValueOnCallStack: 'boolean',
@@ -20,6 +24,7 @@ const argumentTypeNames = {
 
 /**
  * @typedef {Object} ArgumentType
+ * @property {string} id
  * @property {string} title
  * @property {number} returnValueSize
  * @property {boolean} returnValueOnCallStack
@@ -33,6 +38,7 @@ const argumentTypeNames = {
  * Create a call stack chart.
  * 
  * @param {ArgumentType} options - The options for creating the call stack chart.
+ * @param {string} options.id - The id of the chart.
  * @param {string} options.title - The title of the chart.
  * @param {number} options.returnValueSize - The size of the return value.
  * @param {boolean} options.returnValueOnCallStack - Whether the return value is on the call stack.
@@ -50,6 +56,7 @@ export const createCallStackChart = (options) => {
     });
 
     const { 
+        id,
         title,
         returnValueSize,
         returnValueOnCallStack,
@@ -145,7 +152,17 @@ export const createCallStackChart = (options) => {
         ],
     };
 
-    const barStack = (x, y, color, text) => ({
+    /**
+     * Create a bar stack.
+     * 
+     * @param {string} x The column to put the stack on.
+     * @param {number} y The size of the stack.
+     * @param {string} color The color of the stack.
+     * @param {string} shape The pattern shape: `'' | '/' | '\' | 'X' | '-' | '|' | '+' | '.'`
+     * @param {string} text The name of the stack.
+     * @returns 
+     */
+    const barStack = (x, y, color, shape, text) => ({
         x: [x],
         y: [y],
         type: 'bar',
@@ -156,6 +173,11 @@ export const createCallStackChart = (options) => {
                 color: 'black',
                 width: 1
             },
+            pattern: {
+                shape,
+                size: 8,
+                solidity: 0.5
+            },
         },
         textposition: 'inside',
         insidetextanchor: 'middle',
@@ -163,16 +185,16 @@ export const createCallStackChart = (options) => {
     });
 
     Plotly.newPlot(
-        'call-stack-chart',
+        id,
         [
-            barStack(BEFORE_CALL, returnValueSize, 'lightgrey', RETURN_VARIABLE),
-            barStack(DURING_CALL, returnValueSize, returnValueOnCallStack ? 'lightgrey' : 'lightblue', RETURN_VARIABLE),
-            ...(linkRegister ? [barStack(DURING_CALL, 4, 'lightgreen', 'Link Register')] : []),
-            barStack(DURING_CALL, 4, 'lightgreen', 'Frame Pointer'),
-            ...callArgs.map(({ name, size, color }, index) => barStack(DURING_CALL, size, color, `Argument ${index} (${name})`)),
-            ...(returnValueOnCallStack ? [barStack(DURING_CALL, returnValueSize, 'lightblue', 'Return Value')] : []),
-            barStack(DURING_CALL, padding, 'white', 'Padding'),
-            barStack(AFTER_CALL, returnValueSize, 'lightblue', RETURN_VARIABLE)
+            barStack(BEFORE_CALL, returnValueSize, 'lightgrey', '', RETURN_VARIABLE),
+            barStack(DURING_CALL, returnValueSize, ...(returnValueOnCallStack ? ['lightgrey', ''] : ['lightblue', '/']), RETURN_VARIABLE),
+            ...(linkRegister ? [barStack(DURING_CALL, 4, 'lightgreen', '', 'Link Register')] : []),
+            barStack(DURING_CALL, 4, 'lightgreen', '', 'Frame Pointer'),
+            ...callArgs.map(({ name, size, color }, index) => barStack(DURING_CALL, size, color, '', `Argument ${index} (${name})`)),
+            ...(returnValueOnCallStack ? [barStack(DURING_CALL, returnValueSize, 'lightblue', '/', 'Return Value')] : []),
+            barStack(DURING_CALL, padding, 'white', '', 'Padding'),
+            barStack(AFTER_CALL, returnValueSize, 'lightblue', '', RETURN_VARIABLE)
         ],
         layout,
         {
@@ -187,5 +209,5 @@ export const createCallStackChart = (options) => {
     sourceLink.target = '_blank';
     sourceLink.textContent = '© 2024 JPHutchins + sparklerfish | Source Code';
     sourceLink.classList.add('source-link'); 
-    document.getElementById('call-stack-chart').appendChild(sourceLink);
+    document.getElementById(id).appendChild(sourceLink);
 };
