@@ -81,6 +81,12 @@ export const createCallStackChart = (options) => {
             mode: 'hide',
             minsize: 8,
         },
+        margin: {
+            l: 40,
+            r: 0,
+            t: 100,
+            b: 40,
+        },
         annotations: [
             {
                 x: 0.33,
