@@ -78,10 +78,12 @@ export const createCallStackChart = (options) => {
         title: title,
         xaxis: {
             title: 'Call State',
+            fixedrange: true,
         },
         yaxis: {
             title: 'Stack Usage (Bytes)',
             range: [0, yMax],
+            fixedrange: true,
         },
         showlegend: false,
         uniformtext: {
@@ -166,7 +168,7 @@ export const createCallStackChart = (options) => {
         x: [x],
         y: [y],
         type: 'bar',
-        hoverinfo: 'y',
+        hovertemplate: '<b>%{text}</b><br>%{y} bytes<extra></extra>',
         marker: {
             color,
             line: {
@@ -176,12 +178,12 @@ export const createCallStackChart = (options) => {
             pattern: {
                 shape,
                 size: 8,
-                solidity: 0.5
+                solidity: 0.5,
             },
         },
         textposition: 'inside',
         insidetextanchor: 'middle',
-        text,
+        text: [text],
     });
 
     Plotly.newPlot(
@@ -191,7 +193,7 @@ export const createCallStackChart = (options) => {
             barStack(DURING_CALL, returnValueSize, ...(returnValueOnCallStack ? ['lightgrey', ''] : ['lightblue', '/']), RETURN_VARIABLE),
             ...(linkRegister ? [barStack(DURING_CALL, 4, 'lightgreen', '', 'Link Register')] : []),
             barStack(DURING_CALL, 4, 'lightgreen', '', 'Frame Pointer'),
-            ...callArgs.map(({ name, size, color }, index) => barStack(DURING_CALL, size, color, '', `Argument ${index} (${name})`)),
+            ...callArgs.map(({ name, size, color }, index) => barStack(DURING_CALL, size, color, '', `${name === 'padding' ? '' : `Argument ${index}`} (${name})`)),
             ...(returnValueOnCallStack ? [barStack(DURING_CALL, returnValueSize, 'lightblue', '/', 'Return Value')] : []),
             barStack(DURING_CALL, padding, 'white', '', 'Padding'),
             barStack(AFTER_CALL, returnValueSize, 'lightblue', '', RETURN_VARIABLE)
@@ -200,7 +202,6 @@ export const createCallStackChart = (options) => {
         {
             responsive: true,
             displayModeBar: false,
-            staticPlot: true,
         },
     );
 
